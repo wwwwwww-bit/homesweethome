@@ -1,0 +1,1002 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  color: #e0e0e0;
+  overflow: hidden;
+}
+
+/* ===== 桌面 ===== */
+.desktop {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* 桌面图标 */
+.desktop-icons {
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  width: 70px;
+  position: relative;
+}
+
+.desktop-icon:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-img {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.icon-label {
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+}
+
+/* 开始菜单 */
+.start-menu-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.start-button {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #2a2a4a 0%, #3a3a5a 100%);
+  color: #ccc;
+  border: 1px solid #4a4a6a;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.start-button:hover {
+  background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+}
+
+.start-menu {
+  position: absolute;
+  bottom: 45px;
+  left: 0;
+  background: #2a2a4a;
+  border: 1px solid #4a4a6a;
+  border-radius: 8px;
+  padding: 5px 0;
+  min-width: 120px;
+  display: none;
+}
+
+.start-menu.show {
+  display: block;
+}
+
+.start-menu-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.start-menu-item:hover {
+  background: #3a3a5a;
+}
+
+/* 状态栏 */
+.status-bar {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ccc;
+  display: none;
+}
+
+/* ===== 应用窗口 ===== */
+.app-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  inset: 0;
+margin: auto;
+  width: 90%;
+  max-width: 500px;
+  height: 60vh;
+  background: #1e1e30;
+  border-radius: 12px;
+  border: 1px solid #3a3a5a;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.window-header {
+  padding: 12px 18px;
+  background: #2a2a4a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #3a3a5a;
+  border-radius: 12px 12px 0 0;
+  font-weight: bold;
+}
+
+.window-close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.window-close:hover {
+  color: #e74c3c;
+}
+
+.window-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== 文件列表 ===== */
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.file-item:hover {
+  background: #2a2a4a;
+}
+
+.file-icon {
+  font-size: 28px;
+  margin-right: 15px;
+}
+
+.file-name {
+  font-size: 15px;
+  color: #ccc;
+}
+
+/* ===== 游戏窗口按钮 ===== */
+.play-game-btn {
+  padding: 20px 50px;
+  font-size: 18px;
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.play-game-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ===== 浮窗提示动画 ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes fadeInSanity40 {
+  from { opacity: 0; transform: translate(-50%, -20px) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* ===== 结局收集弹窗 ===== */
+.ending-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ending-modal-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.ending-modal-box {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  background: linear-gradient(135deg, #1e1e30 0%, #2a2a4a 100%);
+  border-radius: 16px;
+  border: 1px solid #3a3a5a;
+  z-index: 201;
+  animation: fadeIn 0.3s ease;
+}
+
+.ending-modal-header {
+  padding: 15px 20px;
+  background: #2a2a4a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #3a3a5a;
+  border-radius: 16px 16px 0 0;
+  font-weight: bold;
+}
+
+.ending-modal-close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.ending-modal-close:hover {
+  color: #e74c3c;
+}
+
+.ending-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ending-entry {
+  padding: 12px 15px;
+  border-radius: 10px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.ending-entry.locked {
+  background: #2a2a4a;
+  opacity: 0.6;
+}
+
+.ending-entry.unlocked {
+  background: linear-gradient(135deg, #2a3a5a 0%, #3a5a7a 100%);
+  border: 1px solid #5a8aa3;
+}
+
+.ending-num {
+  color: #888;
+  font-size: 14px;
+  min-width: 50px;
+}
+
+.ending-name {
+  color: #ccc;
+  font-size: 15px;
+}
+/* 事件收集弹窗 */
+.event-entry {
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.event-entry.locked {
+    background: #2a2a4a;
+    opacity: 0.6;
+}
+
+.event-entry.unlocked {
+    background: linear-gradient(135deg, #2a3a5a 0%, #3a5a7a 100%);
+    border: 1px solid #5a8aa3;
+}
+
+.event-num {
+    color: #888;
+    font-size: 14px;
+    min-width: 50px;
+}
+
+.event-name {
+    color: #ccc;
+    font-size: 15px;
+}
+
+/* 邮件通知徽章 */
+.mail-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #e74c3c;
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 骰子窗口居中 */
+.centered-window {
+    max-width: 280px;
+    width: 280px;
+    height: auto;
+    min-height: 140px;
+}
+
+.dice-window-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.big-dice-btn {
+  padding: 20px 50px;
+  font-size: 20px;
+  background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.big-dice-btn:hover {
+  transform: scale(1.05);
+}
+
+.big-dice-btn.rolling {
+  animation: diceShake 0.6s ease;
+}
+
+@keyframes diceShake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-15deg) scale(1.1); }
+  40% { transform: rotate(15deg) scale(1.1); }
+  60% { transform: rotate(-10deg) scale(1.05); }
+  80% { transform: rotate(10deg) scale(1.05); }
+}
+
+.dice-result {
+  font-size: 18px;
+  color: #7ec8e3;
+  text-align: center;
+}
+
+/* 邮箱列表项 */
+.mail-item-desktop {
+  padding: 12px 15px;
+  background: #2a2a4a;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid #8a7a5a;
+}
+
+.mail-item-desktop:hover {
+  background: #3a3a5a;
+  transform: translateX(3px);
+}
+
+.mail-item-title-desktop {
+  font-size: 14px;
+  color: #d4b896;
+  margin-bottom: 4px;
+}
+
+.mail-item-sender-desktop {
+  font-size: 12px;
+  color: #888;
+}
+
+/* 邮件查看器 */
+.email-viewer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 550px;
+  height: 70vh;
+  background: #1e1e30;
+  border-radius: 16px;
+  border: 1px solid #3a3a5a;
+  display: flex;
+  flex-direction: column;
+  z-index: 90;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.email-viewer-header {
+  padding: 15px 20px;
+  background: #2a2a4a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #3a3a5a;
+  border-radius: 16px 16px 0 0;
+}
+
+.email-viewer-close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.email-viewer-close:hover {
+  color: #e74c3c;
+}
+
+.email-viewer-body {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #b0b0c0;
+}
+
+/* ===== 备忘录 ===== */
+.memo-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.memo-list {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.memo-item {
+  padding: 12px 15px;
+  background: #2a2a4a;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid #5a8aa3;
+}
+
+.memo-item:hover {
+  background: #3a3a5a;
+  transform: translateX(3px);
+}
+
+.memo-item-preview {
+  font-size: 14px;
+  color: #d4b896;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memo-item-date {
+  font-size: 11px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.memo-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.memo-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #d4b896;
+  font-size: 14px;
+  line-height: 1.8;
+  padding: 15px;
+  resize: none;
+  font-family: inherit;
+}
+
+.memo-textarea::placeholder {
+  color: #666;
+}
+
+.memo-editor-footer {
+  display: flex;
+  gap: 10px;
+  padding: 10px 15px;
+  border-top: 1px solid #3a3a5a;
+}
+
+.memo-cancel-btn {
+  padding: 6px 16px;
+  background: #555;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.memo-cancel-btn:hover {
+  background: #666;
+}
+
+.memo-list-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #3a3a5a;
+}
+
+.memo-new-btn {
+  width: 100%;
+  padding: 8px;
+  background: #5a8aa3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.memo-new-btn:hover {
+  background: #6a9ab3;
+}
+
+/* ===== 备忘录操作菜单 ===== */
+.memo-action-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.memo-action-menu-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.memo-action-menu-box {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  background: linear-gradient(135deg, #1e1e30 0%, #2a2a4a 100%);
+  border-radius: 12px;
+  border: 1px solid #3a3a5a;
+  z-index: 301;
+  animation: fadeIn 0.2s ease;
+}
+
+.memo-action-title {
+  padding: 12px 18px;
+  background: #2a2a4a;
+  border-radius: 12px 12px 0 0;
+  font-weight: bold;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.memo-action-content {
+  padding: 20px;
+  color: #d4b896;
+  font-size: 14px;
+  line-height: 1.8;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.memo-action-buttons {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #3a3a5a;
+}
+
+.memo-action-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.memo-action-btn.edit {
+  background: #5a8aa3;
+  color: white;
+}
+
+.memo-action-btn.edit:hover {
+  background: #6a9ab3;
+}
+
+.memo-action-btn.delete {
+  background: #a35a5a;
+  color: white;
+}
+
+.memo-action-btn.delete:hover {
+  background: #b36a6a;
+}
+
+.memo-action-btn.cancel {
+  background: #555;
+  color: white;
+}
+
+.memo-action-btn.cancel:hover {
+  background: #666;
+}
+
+/* ===== 官方邮件浮窗 ===== */
+.official-float-hint {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: rgba(90, 74, 58, 0.95);
+  color: #d4b896;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 15px;
+  z-index: 1000;
+  animation: fadeInSanity40 0.3s ease;
+}
+
+/* ===== A对话框 ===== */
+.a-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.a-dialog-box {
+  position: relative;
+  width: 90%;
+  max-width: 520px;
+  background: linear-gradient(135deg, #1e1e30 0%, #2a2a4a 100%);
+  border-radius: 12px;
+  border: 1px solid #3a3a5a;
+  padding: 28px;
+  z-index: 501;
+}
+
+.a-dialog-text {
+  color: #d4b896;
+  font-size: 15px;
+  line-height: 2;
+  margin-bottom: 18px;
+}
+
+.a-dialog-options {
+  margin-bottom: 15px;
+}
+
+.a-dialog-option {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  background: #2a2a4a;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #d4b896;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.a-dialog-option:hover {
+  background: #3a3a5a;
+  border-color: #5a8aa3;
+}
+
+.a-dialog-close {
+  padding: 8px 20px;
+  background: #555;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  float: right;
+}
+
+.a-dialog-close:hover {
+  background: #666;
+}
+
+/* 抖动动画 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+.a-dialog.shaking .a-dialog-box {
+  animation: shake 0.5s ease;
+}
+
+/* ===== 官方事件掷骰子 ===== */
+.official-dice {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.official-dice-text {
+  color: #d4b896;
+  font-size: 18px;
+  animation: fadeIn 0.5s ease;
+}
+
+/* ============ 抽奖小游戏 ============ */
+.lottery-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lottery-modal-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.lottery-modal-box {
+  position: relative;
+  width: 360px;
+  background: linear-gradient(135deg, #1e1e30 0%, #2a2a4a 100%);
+  border-radius: 12px;
+  border: 1px solid #3a3a5a;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  z-index: 601;
+  overflow: hidden;
+}
+
+.lottery-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #3a3a5a;
+  color: #d4b896;
+  font-size: 14px;
+}
+
+.lottery-modal-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lottery-modal-close:hover {
+  color: #d4b896;
+}
+
+.lottery-modal-body {
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.lottery-result {
+  min-height: 60px;
+  color: #d4b896;
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: center;
+  padding: 15px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lottery-draw-btn {
+  padding: 10px 40px;
+  background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+  border: 1px solid #5a5a7a;
+  border-radius: 8px;
+  color: #d4b896;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lottery-draw-btn:hover {
+  background: linear-gradient(135deg, #4a4a6a 0%, #5a5a8a 100%);
+}
+
+@keyframes fadeInTinyHint {
+  from { opacity: 0; transform: translate(-50%, -10px) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* ============ 开机密码 ============ */
+.boot-password-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boot-password-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.boot-password-box {
+  position: relative;
+  width: 320px;
+  background: linear-gradient(135deg, #1e1e30 0%, #2a2a4a 100%);
+  border-radius: 12px;
+  border: 1px solid #3a3a5a;
+  z-index: 10001;
+  overflow: hidden;
+}
+
+.boot-password-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #3a3a5a;
+  color: #d4b896;
+  font-size: 14px;
+  text-align: center;
+}
+
+.boot-password-body {
+  padding: 25px 20px;
+}
+
+/* ============ 图像错误效果 ============ */
+@keyframes imageGlitch {
+  0%, 100% {
+    filter: blur(0px) grayscale(0%);
+  }
+  15% {
+    filter: blur(0.2px) grayscale(10%);
+  }
+  30% {
+    filter: blur(0px) grayscale(0%);
+  }
+  45% {
+    filter: blur(0.3px) grayscale(15%);
+  }
+  60% {
+    filter: blur(0px) grayscale(0%);
+  }
+  75% {
+    filter: blur(0.1px) grayscale(8%);
+  }
+}
+
+.glitch-effect {
+  animation: imageGlitch 5s infinite;
+  position: relative;
+}
+
+.glitch-effect::before,
+.glitch-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  opacity: 0.5;
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.glitch-effect::before {
+  background: rgb(255, 0, 0);
+  mix-blend-mode: screen;
+  animation: glitchRed 5s infinite;
+}
+
+.glitch-effect::after {
+  background: rgb(0, 255, 255);
+  mix-blend-mode: screen;
+  animation: glitchCyan 5s infinite;
+}
+
+@keyframes glitchRed {
+  0%, 100% { transform: translate(-5px, 0); }
+  30% { transform: translate(5px, 0); }
+  60% { transform: translate(-2px, 0); }
+}
+
+@keyframes glitchCyan {
+  0%, 100% { transform: translate(5px, 0); }
+  30% { transform: translate(-5px, 0); }
+  60% { transform: translate(2px, 0); }
+}

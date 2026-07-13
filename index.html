@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home sweet home</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <!-- 桌面 -->
+    <div class="desktop">
+      <!-- 桌面图标 -->
+      <div class="desktop-icons">
+        <div class="desktop-icon" data-window="fileWindow">
+          <div class="icon-img">📁</div>
+          <div class="icon-label">文件</div>
+        </div>
+        <div class="desktop-icon" data-window="memoWindow">
+          <div class="icon-img">📝</div>
+          <div class="icon-label">备忘录</div>
+        </div>
+        <div class="desktop-icon" id="iconMail">
+          <div class="icon-img">📧</div>
+          <div class="icon-label">邮箱</div>
+          <div class="mail-badge hidden" id="mailBadge">1</div>
+        </div>
+        <div class="desktop-icon" data-window="gameWindow">
+          <div class="icon-img">🎮</div>
+          <div class="icon-label">游戏</div>
+        </div>
+        <!-- 骰子图标（在桌面，但骰子窗口不在 desktop 里） -->
+        <div class="desktop-icon hidden" id="iconDice" data-window="diceWindow">
+          <div class="icon-img">🎲</div>
+          <div class="icon-label">骰子</div>
+        </div>
+      </div>
+
+      <!-- 开始菜单 -->
+      <div class="start-menu-container">
+        <button class="start-button" id="startButton">开始</button>
+        <div class="start-menu" id="startMenu">
+          <div class="start-menu-item" id="menuShutdown">关机</div>
+          <div class="start-menu-item" id="menuGame">小游戏</div>
+        </div>
+      </div>
+
+      <!-- 状态栏 -->
+      <div class="status-bar">
+        理智：<span id="sanityValue">50</span>/100
+      </div>
+    </div>
+
+    <!-- 文件窗口 -->
+    <div class="app-window hidden" id="fileWindow">
+      <div class="window-header">
+        <span>文件管理器</span>
+        <button class="window-close" data-window="fileWindow">×</button>
+      </div>
+      <div class="window-body">
+        <div class="file-item" id="fileWord">
+          <span class="file-icon">📄</span>
+          <span class="file-name">工作.docx</span>
+        </div>
+        <div class="file-item" id="fileEndings">
+          <span class="file-icon">🏆</span>
+          <span class="file-name">结局收集</span>
+        </div>
+<div class="file-item" id="fileEvents">
+    <span class="file-icon">📜</span>
+    <span class="file-name">事件收集</span>
+</div>
+        <p style="color:#888;text-align:center;margin-top:40px;">（空）</p>
+      </div>
+    </div>
+
+    <!-- 备忘录窗口 -->
+    <div class="app-window hidden" id="memoWindow">
+      <div class="window-header">
+        <span>备忘录</span>
+        <button class="window-close" data-window="memoWindow">×</button>
+      </div>
+      <div class="window-body memo-body">
+        <div class="memo-list" id="memoList"></div>
+        <div class="memo-editor hidden" id="memoEditor">
+          <textarea class="memo-textarea" id="memoTextarea" placeholder="写下你的想法..."></textarea>
+          <div class="memo-editor-footer">
+            <button class="memo-save-btn" id="memoSaveBtn">保存</button>
+            <button class="memo-cancel-btn" id="memoCancelBtn">取消</button>
+          </div>
+        </div>
+        <div class="memo-list-footer">
+          <button class="memo-new-btn" id="memoNewBtn">＋ 新建备忘录</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 邮箱窗口 -->
+    <div class="app-window hidden" id="mailWindow">
+      <div class="window-header">
+        <span>邮箱</span>
+        <button class="window-close" data-window="mailWindow">×</button>
+      </div>
+      <div class="window-body" id="mailListDesktop">
+        <p style="color:#888;text-align:center;margin-top:40px;">（空）</p>
+      </div>
+    </div>
+
+    <!-- 官方邮件浮窗 -->
+    <div class="official-float-hint hidden" id="officialFloatHint">
+      <span>你发现三日月宗近正站在你背后，也不知道站了多久。</span>
+    </div>
+
+    <!-- A对话框 -->
+    <div class="a-dialog hidden" id="aDialog">
+      <div class="a-dialog-box">
+        <div class="a-dialog-text" id="aDialogText"></div>
+        <div class="a-dialog-options" id="aDialogOptions"></div>
+        <button class="a-dialog-close" id="aDialogClose">关闭</button>
+      </div>
+    </div>
+
+    <!-- 掷骰子画面 -->
+    <div class="official-dice hidden" id="officialDice">
+      <div class="official-dice-text">只是……</div>
+    </div>
+
+    <!-- ★ 骰子窗口：必须在 body 下，不能在 .desktop 里 ★ -->
+    <div class="app-window hidden centered-window" id="diceWindow" style="height: auto; min-height: 140px; max-height: 200px;">
+      <div class="window-header">
+        <span>骰子</span>
+        <button class="window-close" data-window="diceWindow">×</button>
+      </div>
+      <div class="window-body dice-window-body">
+        <button class="big-dice-btn" id="btnRollDice">🎲 掷骰子</button>
+        <div class="dice-result hidden" id="diceResult"></div>
+      </div>
+    </div>
+
+    <!-- ============ JS 加载顺序（非常重要） ============ -->
+<!-- 1. 状态定义（最基础） -->
+<script src="js/state.js"></script>
+<!-- 2. 事件系统（必须先，ui.js 依赖它） -->
+<script src="js/events.js"></script>
+<!-- 3. UI 更新系统（依赖 events.js） -->
+<script src="js/ui.js"></script>
+<!-- 4. 主入口 & 开机流程 -->
+<script src="js/main.js"></script>
+<script src="js/boot.js"></script>
+<!-- 5. 功能模块 -->
+<script src="js/endings.js"></script>
+<script src="js/official.js"></script>
+<script src="js/memo.js"></script>
+<script src="js/mail.js"></script>
+<script src="js/lottery.js"></script>
+<script src="js/collection.js"></script>
+<script src="js/event1.js"></script>
+<script src="js/event2.js"></script>
+<script src="js/event3.js"></script>
+<script src="js/event4.js"></script>
+<script src="js/event5.js"></script>
+  </body>
+</html>
